@@ -246,7 +246,7 @@
 
   /* Feature card */
   .feature-card {
-    @apply group relative rounded-xl border border-border/50 bg-card/50 p-6
+    @apply relative rounded-xl border border-border/50 bg-card/50 p-6
            transition-all duration-300 hover:bg-card hover:border-primary/30 hover:shadow-glow;
   }
 
