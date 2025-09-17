@@ -1,46 +1,54 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/contexts/AuthContext";
-import Layout from "./components/layout/Layout";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Technology from "./pages/Technology";
-import RiskManagement from "./pages/RiskManagement";
-import Performance from "./pages/Performance";
-import Resources from "./pages/Resources";
-import DApp from "./pages/DApp";
-import Contact from "./pages/Contact";
-import NotFound from "./pages/NotFound";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import About from './pages/About';
+import Technology from './pages/Technology';
+import RiskManagement from './pages/RiskManagement';
+import Performance from './pages/Performance';
+import Resources from './pages/Resources';
+import Contact from './pages/Contact';
+import DApp from './pages/DApp';
+import WhitePaper from './pages/WhitePaper';
+import PasswordReset from './pages/PasswordReset';
+import EmailVerification from './pages/EmailVerification';
+import EnhancedAuthModal from './components/EnhancedAuthModal';
+import { AuthProvider } from './contexts/AuthContext';
 
-const queryClient = new QueryClient();
+function App(): React.JSX.Element {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+  return (
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<Index />} />
+      <Router>
+        <div className="min-h-screen bg-gray-50">
+          <Header onAuthClick={() => setIsAuthModalOpen(true)} />
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/technology" element={<Technology />} />
               <Route path="/risk-management" element={<RiskManagement />} />
               <Route path="/performance" element={<Performance />} />
               <Route path="/resources" element={<Resources />} />
-              <Route path="/dapp" element={<DApp />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+              <Route path="/dapp" element={<DApp />} />
+              <Route path="/whitepaper" element={<WhitePaper />} />
+              <Route path="/reset-password" element={<PasswordReset />} />
+              <Route path="/verify-email" element={<EmailVerification />} />
+            </Routes>
+          </main>
+          <Footer />
+          <EnhancedAuthModal 
+            isOpen={isAuthModalOpen} 
+            onClose={() => setIsAuthModalOpen(false)} 
+          />
+        </div>
+      </Router>
     </AuthProvider>
-  </QueryClientProvider>
-);
+  );
+}
 
 export default App;
